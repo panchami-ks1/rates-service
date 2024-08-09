@@ -6,7 +6,6 @@ from flask import jsonify
 
 class Validator:
     def __init__(self):
-        # Initialize the logger
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def validate_input_arguments(self, date_from, date_to, origin, destination):

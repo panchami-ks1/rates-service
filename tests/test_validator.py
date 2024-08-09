@@ -1,5 +1,7 @@
 import unittest
+
 from flask import Flask
+
 from validator import Validator
 
 

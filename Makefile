@@ -5,7 +5,7 @@ DOCKER_COMPOSE = docker-compose
 CONTAINER_NAME = flask_api
 PORT = 8080
 
-.PHONY: build run stop test
+.PHONY: build run stop test build-run
 
 # Default target
 all: build run
@@ -19,6 +19,11 @@ build:
 run:
 	@echo "Starting Docker containers..."
 	$(DOCKER_COMPOSE) up -d
+
+# Build and Run the Docker containers
+build-run:
+	@echo "Starting Docker containers..."
+	$(DOCKER_COMPOSE) up --build -d
 
 # Stop the Docker containers
 stop:

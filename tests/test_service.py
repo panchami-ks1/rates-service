@@ -1,7 +1,9 @@
 import unittest
-from unittest.mock import patch, MagicMock
 from datetime import datetime
+from unittest.mock import patch, MagicMock
+
 from flask import Flask
+
 from service import RateService
 
 

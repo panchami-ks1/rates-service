@@ -1,7 +1,7 @@
+import os
 from datetime import timedelta
 
 import psycopg2
-import os
 from flask import request
 
 from validator import *
@@ -11,7 +11,6 @@ PG_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://postgres:ratestask@loc
 
 class RateService:
     def __init__(self):
-        # Initialize the logger
         self.logger = logging.getLogger(self.__class__.__name__)
         self.validator = Validator()
 
@@ -20,6 +19,8 @@ class RateService:
         date_to = request.args.get('date_to')
         origin = request.args.get('origin')
         destination = request.args.get('destination')
+        self.logger.info(
+            f"requests received to find rates, origin={origin}, destination={destination}, from={date_from} and to={date_to}")
         success, message, code = self.validator.validate_input_arguments(date_from, date_to, origin, destination)
         if not success:
             # Validation failed, returning back the error message.
@@ -30,12 +31,13 @@ class RateService:
 
         origin_ports = get_ports(cursor, origin)
         destination_ports = get_ports(cursor, destination)
-
+        self.logger.info(
+            f"fetched port data from DB, origin_ports={origin_ports} and destination_ports={destination_ports}")
         if not origin_ports or not destination_ports:
             self.logger.info("Origin port or Destination port does not exist ")
-            return jsonify([])
+            return jsonify({"error": "Origin port or Destination port does not exist."})
         price_list = get_average_price(cursor, origin_ports, destination_ports, date_from, date_to)
-        response = []
+        self.logger.info(f"fetched price data from DB, size={len(price_list)}")
         date_from = datetime.strptime(date_from, '%Y-%m-%d').date()
         date_to = datetime.strptime(date_to, '%Y-%m-%d').date()
         # Get all dates between date_from and date_to
@@ -65,7 +67,7 @@ def get_ports(cursor, identifier):
         # It's a port code
         return [identifier]
     else:
-        # It's a region slug, find all ports in the region
+        # It's a region slug, find all ports in the region recursively
         query = """
         WITH RECURSIVE region_tree AS (
             SELECT slug
