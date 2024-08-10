@@ -4,7 +4,7 @@ from unittest.mock import patch, MagicMock
 
 from flask import Flask
 
-from service import RateService
+from src.services.service import RateService
 
 
 class TestRateService(unittest.TestCase):
@@ -14,9 +14,9 @@ class TestRateService(unittest.TestCase):
         self.client = self.app.test_client()
         self.rate_service = RateService()
 
-    @patch('service.psycopg2.connect')
-    @patch('service.get_ports')
-    @patch('service.get_average_price')
+    @patch('src.services.service.psycopg2.connect')
+    @patch('src.services.service.get_ports')
+    @patch('src.services.service.get_average_price')
     def test_find_rates_successful(self, mock_get_average_price, mock_get_ports, mock_connect):
         # Mock database connection and cursor
         mock_conn = MagicMock()
@@ -51,9 +51,9 @@ class TestRateService(unittest.TestCase):
         ]
         self.assertEqual(response.json, expected_response)
 
-    @patch('service.psycopg2.connect')
-    @patch('service.get_ports')
-    @patch('service.get_average_price')
+    @patch('src.services.service.psycopg2.connect')
+    @patch('src.services.service.get_ports')
+    @patch('src.services.service.get_average_price')
     def test_find_rates_no_data(self, mock_get_average_price, mock_get_ports, mock_connect):
         # Mock database connection and cursor
         mock_conn = MagicMock()
@@ -82,9 +82,9 @@ class TestRateService(unittest.TestCase):
         ]
         self.assertEqual(response.json, expected_response)
 
-    @patch('service.psycopg2.connect')
-    @patch('service.get_ports')
-    @patch('service.Validator.validate_input_arguments')
+    @patch('src.services.service.psycopg2.connect')
+    @patch('src.services.service.get_ports')
+    @patch('src.services.service.Validator.validate_input_arguments')
     def test_find_rates_validation_failure(self, mock_validate_input, mock_get_ports, mock_connect):
         # Mock the validation to fail
         mock_validate_input.return_value = (False, 'Validation failed', 400)

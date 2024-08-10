@@ -4,7 +4,7 @@ from datetime import timedelta
 import psycopg2
 from flask import request
 
-from validator import *
+from src.validators.validator import *
 
 PG_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://postgres:ratestask@localhost:5432/postgres')
 

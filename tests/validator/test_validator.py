@@ -2,7 +2,7 @@ import unittest
 
 from flask import Flask
 
-from validator import Validator
+from src.validators.validator import Validator
 
 
 class TestValidator(unittest.TestCase):

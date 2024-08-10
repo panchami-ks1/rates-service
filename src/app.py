@@ -1,7 +1,6 @@
-
 from flask import Flask
 
-from service import *
+from src.services.service import *
 
 
 def create_app():
@@ -24,3 +23,8 @@ def create_app():
         return jsonify({'error': 'Internal Server Error'}), 500
 
     return app
+
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)
