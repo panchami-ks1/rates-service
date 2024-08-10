@@ -3,10 +3,8 @@ from datetime import timedelta
 
 import psycopg2
 from flask import request
-
+from src.config.config import config
 from src.validators.validator import *
-
-PG_DATABASE_URI = os.getenv('DATABASE_URL', 'postgresql://postgres:ratestask@localhost:5432/postgres')
 
 
 class RateService:
@@ -26,7 +24,7 @@ class RateService:
             # Validation failed, returning back the error message.
             return message, code
         # Establish database connectivity.
-        db = psycopg2.connect(PG_DATABASE_URI)
+        db = psycopg2.connect(config.PG_DATABASE_URI)
         cursor = db.cursor()
 
         origin_ports = get_ports(cursor, origin)

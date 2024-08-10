@@ -5,8 +5,14 @@ services:
       - "8080:8080"
     environment:
       - DATABASE_URL=postgresql://postgres:ratestask@db:5432/ratestask
+      - LOG_LEVEL=DEBUG
+      - CACHE_TYPE=redis
+      - CACHE_REDIS_HOST=redis
+      - CACHE_REDIS_PORT=6379
+      - CACHE_DEFAULT_TIMEOUT=300
     depends_on:
       - db
+      - redis
 
   db:
     image: panchami34/ratestask
@@ -25,3 +31,9 @@ services:
       - PYTHONPATH=. pytest
     depends_on:
       - db
+
+  redis:
+    image: "redis:alpine"
+    container_name: "ratestask_redis"
+    ports:
+      - "6379:6379"
