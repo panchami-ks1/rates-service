@@ -14,8 +14,8 @@ class Validator:
             return False, jsonify({"error": "Missing required parameters"}), 400
 
         try:
-            datetime.strptime(date_from, '%Y-%m-%d').date()
-            datetime.strptime(date_to, '%Y-%m-%d').date()
+            datetime.strptime(date_from, '%Y-%m-%d')
+            datetime.strptime(date_to, '%Y-%m-%d')
         except ValueError:
             self.logger.info("Invalid date format.")
             return False, jsonify({"error": "Invalid date format"}), 400

@@ -1,0 +1,101 @@
+openapi: 3.0.3
+info:
+  title: Flask API with PostgreSQL
+  description: API to retrieve average pricing data between ports or regions.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  /rates:
+    get:
+      summary: Get average prices between ports or regions
+      description: Retrieve average daily prices between specified ports or regions. Returns data for each day in the specified range, with prices rounded to the nearest integer. Days with less than 3 prices will have `average_price` as `null`.
+      parameters:
+        - name: date_from
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2016-01-01'
+          description: Start date for the price range (inclusive).
+        - name: date_to
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: '2016-01-10'
+          description: End date for the price range (inclusive).
+        - name: origin
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 'CNSGH'
+          description: Port code or region slug for the origin.
+        - name: destination
+          in: query
+          required: true
+          schema:
+            type: string
+            example: 'north_europe_main'
+          description: Port code or region slug for the destination.
+      responses:
+        '200':
+          description: A list of average prices for each day in the range.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    day:
+                      type: string
+                      format: date
+                      example: '2016-01-01'
+                      description: The date for the pricing data.
+                    average_price:
+                      type: integer
+                      nullable: true
+                      example: 1112
+                      description: The average price for the day. Null if there are less than 3 prices for that day.
+        '400':
+          description: Bad request. Returned if any query parameters are missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing required parameters"
+        '404':
+          description: No data found for the given parameters.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "No data found"
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Internal Server Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string

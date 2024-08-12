@@ -14,7 +14,7 @@ This project is a Flask-based web API that connects to a PostgreSQL database. Th
 
 ### Pre-requisites 
 1. **Ensure Docker and Docker Compose are installed** on your machine. You can download Docker from [Docker's official site](https://www.docker.com/products/docker-desktop) and Docker Compose from [here](https://docs.docker.com/compose/install/).
-2. Install Make Optionally to run the commands easily [GNU-Make](https://www.gnu.org/software/make/manual/make.html)
+2. Install Make, optionally to run the commands easily [GNU-Make](https://www.gnu.org/software/make/manual/make.html)
 
 
 ### Build
@@ -49,7 +49,7 @@ To start the application and the PostgreSQL database.
     ```
    If make is not available, run the following command.
     ```bash
-    docker-compose up --build -d
+    docker-compose up -d
     ```
 2. **Access the Flask API:** 
 

@@ -63,7 +63,7 @@ class RateService:
 def get_ports(cursor, identifier):
     if len(identifier) == 5:
         # It's a port code
-        return [identifier]
+        return [identifier.upper()]
     else:
         # It's a region slug, find all ports in the region recursively
         query = """
